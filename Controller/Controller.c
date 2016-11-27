@@ -189,7 +189,7 @@ void getRawData(int *rawData)
 
 }
 
-void updateAngle(int *rawData, Angel *angle)
+void updateAngle(int *rawData, Angle *angle)
 {
 	Accel accel;
 	Gyro gyro;
@@ -214,10 +214,10 @@ void updateAngle(int *rawData, Angel *angle)
 	accel_y_angle = atan2((float)accel.y, (float)accel.z) * 180 / PI;
 
 	angle->x = ( GYRO_WEIGHT * ( angle->x + ( gyro_x_angle * DELTA_TIME) ) +
-			( ACCEL_WEIGHT * accXangle ) );
+			( ACCEL_WEIGHT * accel_x_angle ) );
 
 	angle->y = ( GYRO_WEIGHT * ( angle->y + ( gyro_y_angle * DELTA_TIME) ) +
-			( ACCEL_WEIGHT * accYangle ) );
+			( ACCEL_WEIGHT * accel_y_angle ) );
 
 }
 
@@ -229,7 +229,7 @@ void putch(char data)
 
 void sendAngle(Angle angle)
 {
-	int i;
+	int i = 0;
 	char sendBuff[40];
 
 	sprintf(sendBuff, "%d", (int)angle.x);
