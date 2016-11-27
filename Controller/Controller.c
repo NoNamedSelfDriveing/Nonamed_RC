@@ -34,10 +34,10 @@ typedef struct {
 void setUp();
 void I2C_init(void);
 void I2C_write(unsigned char slv_addr,
-		unsigned char address,
-		unsigned char byte);
+		unsigned char regi_addr,
+		unsigned char data);
 
-int I2C_read(unsigned char slv_addr, unsigned char regi);
+int I2C_read(unsigned char slv_addr, unsigned char regi_addr);
 
 void getRawData(int *rawData);
 void updateAngle(int *rawData, Angle *angle);
@@ -97,8 +97,8 @@ void I2C_init(void)
 }
 
 void I2C_write(unsigned char slv_addr,
-		unsigned char address,
-		unsigned char byte) {
+		unsigned char regi_addr,
+		unsigned char data) {
 
 	delay_ms(1);
 
@@ -111,24 +111,24 @@ void I2C_write(unsigned char slv_addr,
 	//prescaler bits. If status different from START
 	//go to ERROR
 
-	TWDR = slv_addr; // Address
+	TWDR = slv_addr; // data
 	TWCR = 0x84;
 	while(((TWCR & 0x80) == 0x00) || (TWSR & 0xF8) != 0x18);
 	// SLA + W transmitted, ACK received
 
-	TWDR = address;
+	TWDR = regi_addr;
 	TWCR = 0x84;
 	while(((TWCR & 0x80) == 0x00) || (TWSR & 0xF8) != 0x28);
 	// data transmitted, ACK received
 
-	TWDR = byte;
+	TWDR = data;
 	TWCR = 0x84;
 	while(((TWCR & 0x80) == 0x00) || (TWSR & 0xF8) != 0x28);
 
 	TWCR = 0x94; // stop
 }
 
-int I2C_read(unsigned char slv_addr, unsigned char regi)
+int I2C_read(unsigned char slv_addr, unsigned char regi_addr)
 {
 	unsigned int result;
 	delay_ms(1);
@@ -141,7 +141,7 @@ int I2C_read(unsigned char slv_addr, unsigned char regi)
 	delay_us(50);
 
 	while(((TWCR & 0x80) == 0x00) || (TWSR & 0xF8) != 0x18); // MT_SLV_ACK
-	TWDR = regi;
+	TWDR = regi_addr;
 	TWCR = 0x84;
 	delay_us(50);
 
