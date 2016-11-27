@@ -1,0 +1,11 @@
+*.c~
+*.cbi
+*.cci
+*.cfg
+*.atsln
+*.cof
+*.cproj
+*.fct
+*.prj
+*.prj~
+*.txt
