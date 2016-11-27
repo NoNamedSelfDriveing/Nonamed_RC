@@ -60,7 +60,7 @@ void main()
 	{
 		getRawData(rawData);
 
-		convertData(rawData, &angle);
+		updateAngle(rawData, &angle);
 
 		sprintf(firstBuf, "XANGLE : %5d",(int)angle.x);
 		sprintf(secondBuf, "YANGLE : %5d",(int)angle.y);
@@ -70,7 +70,7 @@ void main()
 		lcd_gotoxy(0, 1);
 		lcd_puts(secondBuf);
 
-		sendAngle(sendBuff);
+		sendAngle(angle);
 	}
 }
 
