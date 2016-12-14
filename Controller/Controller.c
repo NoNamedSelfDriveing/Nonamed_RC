@@ -62,7 +62,7 @@ void main()
 
 		updateAngle(rawData, &angle);
 
-		sprintf(firstBuf, "XANGLE : %5d",(int)angle.x);
+		sprintf(firstBuf, "XANGLE : %5d",(int)angle.x+90);
 		sprintf(secondBuf, "YANGLE : %5d",(int)angle.y);
 
 		lcd_gotoxy(0, 0);
@@ -82,7 +82,7 @@ void setUp()
 	I2C_write(0xd0, 0x6B, 0);
 
 	UCSR0A = 0x00;
-	UCSR0B = 0xA8;
+	UCSR0B = 0x08;
 	UCSR0C = 0x06;
 
 	UBRR0H = 0x00;
@@ -231,12 +231,14 @@ void sendAngle(Angle angle)
 {
 	int i = 0;
 	char sendBuff[40];
-
-	sprintf(sendBuff, "%d", (int)angle.x);
+                                                                                              
+	sprintf(sendBuff, "%d", (int)angle.x+90);
 
 	while(sendBuff[i] != '\0')
 	{
 		putch(sendBuff[i]);
 		++i;
 	}
+
+	putch('\0');
 }
